@@ -74,7 +74,70 @@ public class RBTree extends BinarySearchTree {
         // TODO (Exercise 2): implement red-black insertion.
         // Hint: BinarySearchTree.add already does Step 1 and creates an RBNode.
         //       You may add private helper methods (for example insertFixup).
-        throw new UnsupportedOperationException("Implement RB insertion");
+        Node inserted = super.add(value);
+        if (inserted != null) {
+            insertFixup(inserted);
+        }
+        return inserted;
+    }
+    
+    private void insertFixup (Node inserted) {
+        Node z = inserted;
+        while (isRed(z.parent)) {
+            Node p = z.parent; 
+            Node g = p.parent;
+            // If we are on the LEFT side of the tree
+            if (p == g.left) {
+                // Check RIGHT uncle
+                Node u = g.right;
+
+                // Case 1a: Red uncle, recolor and move up
+                if (isRed(u)) {
+                    setColor(p, BLACK);
+                    setColor(u, BLACK);
+                    setColor(g, RED);
+                    z = g;
+                }
+                else {
+                    // Case 2a: Black uncle, right child, zig zag formation
+                    if (z == p.right) {
+                        z = p; 
+                        rotateLeft(z); 
+                        p = z.parent;
+                    }
+                    // Case 3a: Black uncle, left child, straight formation
+                    setColor(p, BLACK);
+                    setColor(g, RED); 
+                    rotateRight(g);
+                }
+            }
+            // If we are on the RIGHT side of the tree
+            else {
+                // Check LEFT uncle
+                Node u = p.left;
+
+                // Case 1b: Red uncle, recolor and move up
+                if (isRed(u)) {
+                    setColor(p, BLACK);
+                    setColor(u, BLACK);
+                    setColor(g, RED);
+                    z = g;
+                }
+                else {
+                    // Case 2b: Black uncle, left child, zig zag formation
+                    if (z == p.left) {
+                        z = p;
+                        rotateRight(z);
+                        p = z.parent;
+                    }
+                    // Case 3b: Black uncle, right child, straight formation
+                    setColor(p, BLACK);
+                    setColor(g, RED);
+                    rotateLeft(g);
+                }
+            }
+        }
+        setColor(root, BLACK); // root rule 
     }
 
     /*
