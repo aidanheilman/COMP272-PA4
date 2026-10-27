@@ -80,7 +80,6 @@ public class RBTree extends BinarySearchTree {
         }
         return inserted;
     }
-    
     private void insertFixup (Node inserted) {
         Node z = inserted;
         while (isRed(z.parent)) {
@@ -114,7 +113,7 @@ public class RBTree extends BinarySearchTree {
             // If we are on the RIGHT side of the tree
             else {
                 // Check LEFT uncle
-                Node u = p.left;
+                Node u = g.left;
 
                 // Case 1b: Red uncle, recolor and move up
                 if (isRed(u)) {
