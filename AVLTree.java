@@ -130,9 +130,43 @@ public class AVLTree extends BinarySearchTree {
         // TODO (Exercise 1): AVL deletion also requires rebalancing.
         // Remove value as in a BST, then restore the AVL balance condition
         // on every node from the right starting point up to the root.
-        throw new UnsupportedOperationException(
-            "Implement AVL deletion with rebalancing"
-        );
+        /* remove(v, k): // returns new root of v's subtree
+            if v == null: return null // key not found
+            if k < v.key: v.left = remove(v.left, k)
+            elif k > v.key: v.right = remove(v.right, k)
+            else:
+            if v.left == null: return v.right // 0 or 1 child
+            if v.right == null: return v.left
+            s = min(v.right) // inorder successor
+            v.key = s.key
+            v.right = remove(v.right, s.key)
+            updateHeight(v) // the walk back up
+            return rebalance(v) // same rebalance as insert 
+        */
+        // Start the same as BST deletion
+        Node target = findNode(value);
+        if (target == null) {
+            return false;
+        }
+
+        // Two children: copy the successor's value, then remove the successor.
+        if (target.left != null && target.right != null) {
+            Node successor = minimum(target.right);
+            target.value = successor.value;
+            target = successor;
+        }
+
+        // Now target has at most one child.
+        Node child = (target.left != null) ? target.left : target.right;
+        Node parentOfRemoved = target.parent;
+
+        transplant(target, child);
+        size--;
+
+        // Rebalance accordingly, instead of just recalculating height
+        // Ensures AVL conditions remain intact
+        rebalanceUpward(parentOfRemoved);
+        return true;
     }
 
     /*
