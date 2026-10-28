@@ -13,11 +13,22 @@ import java.util.TreeSet;
  */
 public class LockerAssigner {
 
-    // TODO: declare your field(s) here.
+    // Initialize a TreeSet to be used as locker system, 
+    // and private numLockers to keep track between methods
+    private TreeSet<Integer> freeLockers = new TreeSet<>();
+    private int numLockers;
 
     /** Create lockers 1..n, all free. Throw IllegalArgumentException if n < 0. */
     public LockerAssigner(int n) {
-        // TODO
+        // Add n nodes if legal
+        if (n < 0) {
+            throw new IllegalArgumentException("Negative arguments not accepted");
+        }
+        // Assign n to numLockers for validation in release()
+        numLockers = n;
+        for (int i = 1; i <= n; i++) {
+            freeLockers.add(i);
+        }
     }
 
     /**
@@ -26,7 +37,40 @@ public class LockerAssigner {
      * even outside 1..n. Return -1 if no locker is free.
      */
     public int assign(int preferred) {
-        throw new UnsupportedOperationException("TODO: LockerAssigner.assign");
+        // Handle base case -> no locker free, return -1
+        if (freeLockers.isEmpty()) {
+            return -1;
+        }
+        // Declare var to be returned later
+        // Use Integer to be able to compare to null
+        int taken;
+        Integer floorLocker = freeLockers.floor(preferred);
+        Integer ceilingLocker = freeLockers.ceiling(preferred);
+        
+        // Secondary case -> floor or ceiling returned null
+        if (floorLocker == null) {
+            taken = ceilingLocker;
+        }
+        else if (ceilingLocker == null) {
+            taken = floorLocker;
+        }
+        // Store difference between available and preferred for comparison
+        // Use (long) to avoid possible overflow
+        else {
+            long lowDiff = (long) preferred - floorLocker;
+            long highDiff = (long) ceilingLocker - preferred;
+
+            // Check if lockers are equidistant and if not, which is higher, in one step
+            if (lowDiff <= highDiff) {
+                taken = floorLocker;
+            } 
+            else {
+                taken = ceilingLocker;
+            }
+        }
+        // Delete result from tree, return result
+        freeLockers.remove(taken);
+        return taken;
     }
 
     /**
@@ -34,7 +78,13 @@ public class LockerAssigner {
      * nothing) if it is already free or is not a number in 1..n.
      */
     public boolean release(int locker) {
-        throw new UnsupportedOperationException("TODO: LockerAssigner.release");
+        // Validate that locker is in range of available lockers
+        if (locker < 1 || locker > numLockers) {
+            return false;
+        }
+        // Valid locker, "release" (add it back in)
+        freeLockers.add(locker);
+        return true;
     }
 
     /*
