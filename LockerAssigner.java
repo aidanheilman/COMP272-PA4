@@ -78,8 +78,8 @@ public class LockerAssigner {
      * nothing) if it is already free or is not a number in 1..n.
      */
     public boolean release(int locker) {
-        // Validate that locker is in range of available lockers
-        if (locker < 1 || locker > numLockers) {
+        // Validate that locker is in range of available lockers and is currently taken
+        if (locker < 1 || locker > numLockers || freeLockers.contains(locker)) {
             return false;
         }
         // Valid locker, "release" (add it back in)
