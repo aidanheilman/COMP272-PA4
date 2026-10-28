@@ -93,13 +93,29 @@ public class LockerAssigner {
      *
      * Q1. Which structure did you use (TreeSet, TreeMap, or both), what does it
      *     store, and why does it fit this problem?
+     * A1: I used TreeSet. It stores integers (representative of free lockers) in an 
+     *     RB Tree as a Set data structure, meaning there are no keys. It fits this 
+     *     problem because the RB tree ensures O(log n) insertion/deletion/search and
+     *     no keys are needed because the presence of the ints signifies that the 
+     *     locker is available in this implementation.
      *
      * Q2. If you had stored the free lockers in an unsorted ArrayList instead,
      *     what would be the worst-case running time of assign and of release?
-     *
+     * A2: Worst case running time of assign and release in an unsorted ArrayList 
+     *     would be O(n), because you'd need to potentially traverse the whole list
+     *     for both. Worst case contains() (i.e. desired value is at the end of 
+     *     the list) in release() and remove() (i.e. having to shift the whole list 
+     *     over after removing an index) in assign() are both examples of this. 
+     * 
      * Q3. What is the worst-case running time of assign and release with your
      *     solution? Justify it using the fact that TreeSet and TreeMap are
      *     red-black trees.
+     * A3. Worst case of assign and release are O(log n). In assign, remove is the 
+     *     most complex operation. Remove in a RB tree is O(log n), O(log n) to find
+     *     the value to delete, and at most O(log n) to recolor/rebalance, because the
+     *     height is always log n because of the invariants, and the operations are 
+     *     bound by that. Release's most complex operation is add, which is O(log n)
+     *     for the same reason. 
      * ============================================================================
      */
 }

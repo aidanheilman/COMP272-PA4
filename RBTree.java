@@ -141,7 +141,22 @@ public class RBTree extends BinarySearchTree {
 
     /*
      * ======================== Exercise 2, Part B — Analysis ========================
-     *
+     * Let n be number of nodes in tree
+     * Q1. Using your code, explain why one insertion performs at most 2 Rotations,
+     *     but may perform O(log n) recolorings.
+     * A1: One insertion performs at most 2 rotations because after two rotations,
+     *     the uncle in question will always be red, so only recoloring up the tree
+     *     will be necessary. The uncle can't be black all the way up the tree because
+     *     that would mean the invariant had been previously violated.
+     * 
+     * Q2. Determine worst-case running time of add in terms of n. Use the fact that
+     *     a RB tree with n nodes has height h <= 2 log(n+1)
+     * A2: Worst case running time of add will be 2 rotations, and recoloring all the
+     *     way up the tree from the bottom of the tree. Each rotation is O(1), each 
+     *     recolor is O(1). Recoloring from the bottom to the top, meaning h times, 
+     *     will mean recoloring 2 log(n+1) times at absolute worst, all of which 
+     *     simplifies to O(log n) over time because log(n) is the dominant term 
+     *     as n grows very large. 
      *
      * ===============================================================================
      */

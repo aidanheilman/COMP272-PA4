@@ -171,8 +171,28 @@ public class AVLTree extends BinarySearchTree {
 
     /*
      * ======================== Exercise 1, Part B — Analysis ========================
+     * Let n be the number of nodes in the tree.
+     * Determine the worst-case running time of delete in terms of n. 
+     * 
+     * Justify the cost of each step: finding the node, finding the successor, removing 
+     * it, and rebalancing. How many rotations can one deletion perform in the worst
+     * case? Why does one insertion never need more than one restructure (single or
+     * double rotation)?
      *
-     *
+     * Finding the node costs O(log n) maximum, because the AVL is built on a binary tree
+     * where, due to the balance invariant, the tree is always balanced, meaning the 
+     * height is always O(log n), and search in a binary tree is bound by height. 
+     * Finding the successor also at maximum O (log n), becuase you can only go as deep 
+     * to find it as the height will allow, and height is O (log n). Recalculating height 
+     * and balance for the ancestor of the deleted node all the way back up to the root
+     * costs O(1), done a max of of h (O(log n)) times. One rotation costs O(1), but
+     * rotations for deletions can span the entire height of the tree, because one
+     * deletion in the wrong place can effectively throw every ancestral subtree's balance
+     * out of range. Insertion only ever needs one restructure becuase it will only ever
+     * throw the balance off by 1, for the subtree that it was added to. Fixing that
+     * subree fixes the whole tree.       
+     * 
+     * 
      * ===============================================================================
      */
 
